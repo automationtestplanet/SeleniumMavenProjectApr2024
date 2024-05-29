@@ -73,7 +73,7 @@ public class SeleniumTest {
 			System.out.println("Login failed");
 		}
 
-		driver.close();
+//		driver.close();
 //		driver.quit();
 
 	}

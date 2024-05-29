@@ -22,11 +22,7 @@ public class WelcomePageTest {
 //		driver.findElement(By.cssSelector("input[placeholder='Enter User Name']")).sendKeys("Test1234");
 //		driver.findElement(By.cssSelector("input[id='userName'][placeholder='Enter User Name']")).sendKeys("Test1234");		
 		driver.findElement(By.cssSelector("#userName")).sendKeys("Test1234");
-		
-		
-		
-		
-		
+	
 		
 //		driver.findElement(By.name("Password")).sendKeys("Test1234");
 //		driver.findElement(By.cssSelector("[name='Password']")).sendKeys("Test1234");
