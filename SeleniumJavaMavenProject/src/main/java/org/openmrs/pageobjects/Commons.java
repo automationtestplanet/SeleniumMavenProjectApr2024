@@ -5,14 +5,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public class Commons {
-
-	WebDriver driver;
+public class Commons extends BasePage{
 	
 	public Commons(WebDriver driver) {
-		this.driver = driver;
+		super(driver);
 	}
-	
+
 	public void navigateToApplication(String url) {
 		driver.get(url);
 	}
@@ -44,7 +42,6 @@ public class Commons {
 			System.out.println(pageName + " Page is not displayed");
 			return false;
 		}
-
 	}
 
 }

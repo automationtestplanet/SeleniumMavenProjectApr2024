@@ -7,13 +7,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class HomePage {
+public class HomePage extends BasePage{
 
-	WebDriver driver;
-	
 	public HomePage(WebDriver driver) {
-		this.driver = driver;
-		PageFactory.initElements(this.driver, this);
+		super(driver);
 	}
 
 	@FindBy(partialLinkText = "Logout")
