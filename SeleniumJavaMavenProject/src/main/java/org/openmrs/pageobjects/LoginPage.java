@@ -1,6 +1,7 @@
 package org.openmrs.pageobjects;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -34,7 +35,7 @@ public class LoginPage extends BasePage{
 		return driver.findElement(By.id(moduleName));
 	}
 
-	public WebElement getLogout() {
+	public WebElement getLogin() {
 		return loginButton;
 	}
 
@@ -47,11 +48,17 @@ public class LoginPage extends BasePage{
 	}
 
 	public void selectMainModule(String moduleName) {
-		getMainModule(moduleName).click();
+//		getMainModule(moduleName).click();
+		JavascriptExecutor js = (JavascriptExecutor)driver;
+		js.executeScript("arguments[0].scrollIntoView(true)", getMainModule(moduleName));
+		js.executeScript("arguments[0].click()", getMainModule(moduleName));
 	}
 
 	public void clickLogin() {
-		getLogout().click();
+//		getLogin().click();
+		JavascriptExecutor js = (JavascriptExecutor)driver;
+		js.executeScript("arguments[0].scrollIntoView(true)", getLogin());
+		js.executeScript("arguments[0].click()", getLogin());
 	}
 
 	public void loginToOpenMrs(String userName, String password, String moduleName) {

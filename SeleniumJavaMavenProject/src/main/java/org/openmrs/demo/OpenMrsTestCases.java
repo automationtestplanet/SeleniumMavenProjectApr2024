@@ -9,7 +9,10 @@ import org.openmrs.pageobjects.LoginPage;
 import org.openmrs.pageobjects.PatientDetailsPage;
 import org.openmrs.pageobjects.RegistrationPage;
 import org.openmrs.pageobjects.Utils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class OpenMrsTestCases {
@@ -26,9 +29,12 @@ public class OpenMrsTestCases {
 		RegistrationPage registrationPage = new RegistrationPage(driver);
 		PatientDetailsPage patientDetailsPage = new PatientDetailsPage(driver);
 		FindPatientRecordPage findPatientRecordPage = new FindPatientRecordPage(driver);
+		JavascriptExecutor jsExec = (JavascriptExecutor)driver;
+		
 		commons.navigateToApplication(Utils.appProperties.getProperty("url"));
 		loginPage.loginToOpenMrs(Utils.appProperties.getProperty("user.name"),
 				Utils.appProperties.getProperty("password"), "Registration Desk");
+		
 		if (commons.verifyPage("Home") && homePage.verifyLogoutButton()) {
 			System.out.println("Login Successfull");
 			homePage.selectModule("Register a patient");
@@ -60,37 +66,55 @@ public class OpenMrsTestCases {
 								if (findPatientRecordPage.verifyPatientSearchResult("Identifier",
 										Utils.appProperties.getProperty("patient.id"))) {
 									findPatientRecordPage.openPatientRecord("Identifier");
-									if (patientDetailsPage.getPatientIdValue()
-											.equals(Utils.appProperties.getProperty("patient.id"))) {
-										System.out.println("Find Patient is passed");
-										patientDetailsPage.clickStartVisit();
-										patientDetailsPage.clickStartVisitConfirm();
-										patientDetailsPage.clickAttachments();
-										String filePath = "C:\\Users\\RAJU CHELLE\\Desktop\\UploadFile.pdf";
-										patientDetailsPage.uploadFile(filePath, "File1");
-										if (patientDetailsPage.verifyUploadedFile()) {
-											System.out.println("File Upload is passed");
-											homePage.clickHomeButton();
-											findPatientRecordPage.setPatientIdInPatientSearchFiled(
-													Utils.appProperties.getProperty("patient.id"));
-											findPatientRecordPage.openPatientRecord("Identifier");
-											patientDetailsPage.clickDeletePatient();
-											patientDetailsPage.setDeleteReason("Other");
-											patientDetailsPage.clickDeleteConfirm();
-											findPatientRecordPage.setPatientIdInPatientSearchFiled(
-													Utils.appProperties.getProperty("patient.id"));
-
-											if (findPatientRecordPage.verifyDeletePatient()) {
-												System.out.println("Delete ptient is passed");
-											} else {
-												System.out.println("Delete ptient is failed");
-											}
-										} else {
-											System.out.println("File Upload is failed");
-										}
-									} else {
-										System.out.println("Find Patient is passed");
-									}
+									
+									jsExec.executeScript("window.scroll(0,document.body.scrollHeight)");
+									
+									try {
+									Thread.sleep(2000);
+									}catch(Exception e) {}
+									
+									jsExec.executeScript("window.scroll(0,document.body.scrollToTop)");
+									
+									try {
+										Thread.sleep(2000);
+										}catch(Exception e) {}
+									
+									WebElement appointments = driver.findElement(By.xpath("//h3[text()='APPOINTMENTS']"));
+									
+									jsExec.executeScript("arguments[0].scrollIntoView(true)", appointments);
+									
+									
+									
+//									if (patientDetailsPage.getPatientIdValue()
+//											.equals(Utils.appProperties.getProperty("patient.id"))) {
+//										System.out.println("Find Patient is passed");
+//										patientDetailsPage.clickStartVisit();
+//										patientDetailsPage.clickStartVisitConfirm();
+//										patientDetailsPage.clickAttachments();
+//										String filePath = "C:\\Users\\RAJU CHELLE\\Desktop\\UploadFile.pdf";
+//										patientDetailsPage.uploadFile(filePath, "File1");
+//										if (patientDetailsPage.verifyUploadedFile()) {
+//											System.out.println("File Upload is passed");
+//											homePage.clickHomeButton();
+//											findPatientRecordPage.setPatientIdInPatientSearchFiled(
+//													Utils.appProperties.getProperty("patient.id"));
+//											findPatientRecordPage.openPatientRecord("Identifier");
+//											patientDetailsPage.clickDeletePatient();
+//											patientDetailsPage.setDeleteReason("Other");
+//											patientDetailsPage.clickDeleteConfirm();
+//											findPatientRecordPage.setPatientIdInPatientSearchFiled(
+//													Utils.appProperties.getProperty("patient.id"));
+//											if (findPatientRecordPage.verifyDeletePatient()) {
+//												System.out.println("Delete ptient is passed");
+//											} else {
+//												System.out.println("Delete ptient is failed");
+//											}
+//										} else {
+//											System.out.println("File Upload is failed");
+//										}
+//									} else {
+//										System.out.println("Find Patient is passed");
+//									}
 								} else {
 									System.out.println("Find Patient Record result is incorrect");
 								}

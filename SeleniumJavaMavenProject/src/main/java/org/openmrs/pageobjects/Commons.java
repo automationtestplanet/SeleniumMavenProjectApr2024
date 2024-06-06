@@ -1,12 +1,18 @@
 package org.openmrs.pageobjects;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 
-public class Commons extends BasePage{
-	
+public class Commons extends BasePage {
+
 	public Commons(WebDriver driver) {
 		super(driver);
 	}
@@ -17,7 +23,7 @@ public class Commons extends BasePage{
 
 	public WebElement getModuleTitle(String moduleName) {
 		return driver.findElement(By.xpath("//h2[contains(text(),'" + moduleName + "')]"));
-	}	
+	}
 
 	public boolean verifyModulePage(String moduleName) {
 		if (getModuleTitle(moduleName).isDisplayed()) {
@@ -42,6 +48,25 @@ public class Commons extends BasePage{
 			System.out.println(pageName + " Page is not displayed");
 			return false;
 		}
+	}
+
+	public void captureScreenshot() {
+
+		try {
+			TakesScreenshot ts = (TakesScreenshot) driver;
+
+			File sreenshot = ts.getScreenshotAs(OutputType.FILE);
+			String screenshotName = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss").format(new Date()).replaceAll("[^0-9]",
+					"") + ".jpg";
+			String screenshotPath = System.getProperty("user.dir") + "//src/main//resources//screenshots//"
+					+ screenshotName;
+			File destiationLoc = new File(screenshotPath);
+
+			FileUtils.copyFile(sreenshot, destiationLoc);
+		} catch (Exception e) {
+			System.out.println("Exception occured while capturing the screenshot " + e.getCause());
+		}
+
 	}
 
 }

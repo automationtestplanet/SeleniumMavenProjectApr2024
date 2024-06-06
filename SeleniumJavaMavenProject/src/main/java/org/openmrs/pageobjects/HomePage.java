@@ -1,11 +1,14 @@
 package org.openmrs.pageobjects;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class HomePage extends BasePage {
 
@@ -18,6 +21,9 @@ public class HomePage extends BasePage {
 
 	@FindBy(css = "i[class='icon-home small']")
 	WebElement homeButton;
+
+	@FindBy(css = "button.navbar-toggler")
+	WebElement logoutMenuElement;
 
 	public WebElement getLogout() {
 		return logoutElement;
@@ -50,7 +56,29 @@ public class HomePage extends BasePage {
 	}
 
 	public void clickLogoutButton() {
-		getLogout().click();
+//		getLogout().click();
+		JavascriptExecutor js = (JavascriptExecutor)driver;		
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOf(getLogout()));
+		js.executeScript("arguments[0].scrollIntoView(true)", getLogout());
+		wait.until(ExpectedConditions.elementToBeClickable(getLogout()));		
+		js.executeScript("arguments[0].click()", getLogout());
 	}
+	
+	public WebElement getLogoutMenu() {
+		return logoutMenuElement;
+	}
+	
+	public void clickLogoutMenu() {
+//		getLogoutMenu().click();
+		JavascriptExecutor js = (JavascriptExecutor)driver;		
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOf(getLogoutMenu()));
+		js.executeScript("arguments[0].scrollIntoView(true)", getLogoutMenu());
+		wait.until(ExpectedConditions.elementToBeClickable(getLogoutMenu()));		
+		js.executeScript("arguments[0].click()", getLogoutMenu());
+		
+	}
+	
 
 }
