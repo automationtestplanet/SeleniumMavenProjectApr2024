@@ -82,39 +82,36 @@ public class OpenMrsTestCases {
 									WebElement appointments = driver.findElement(By.xpath("//h3[text()='APPOINTMENTS']"));
 									
 									jsExec.executeScript("arguments[0].scrollIntoView(true)", appointments);
-									
-									
-									
-//									if (patientDetailsPage.getPatientIdValue()
-//											.equals(Utils.appProperties.getProperty("patient.id"))) {
-//										System.out.println("Find Patient is passed");
-//										patientDetailsPage.clickStartVisit();
-//										patientDetailsPage.clickStartVisitConfirm();
-//										patientDetailsPage.clickAttachments();
-//										String filePath = "C:\\Users\\RAJU CHELLE\\Desktop\\UploadFile.pdf";
-//										patientDetailsPage.uploadFile(filePath, "File1");
-//										if (patientDetailsPage.verifyUploadedFile()) {
-//											System.out.println("File Upload is passed");
-//											homePage.clickHomeButton();
-//											findPatientRecordPage.setPatientIdInPatientSearchFiled(
-//													Utils.appProperties.getProperty("patient.id"));
-//											findPatientRecordPage.openPatientRecord("Identifier");
-//											patientDetailsPage.clickDeletePatient();
-//											patientDetailsPage.setDeleteReason("Other");
-//											patientDetailsPage.clickDeleteConfirm();
-//											findPatientRecordPage.setPatientIdInPatientSearchFiled(
-//													Utils.appProperties.getProperty("patient.id"));
-//											if (findPatientRecordPage.verifyDeletePatient()) {
-//												System.out.println("Delete ptient is passed");
-//											} else {
-//												System.out.println("Delete ptient is failed");
-//											}
-//										} else {
-//											System.out.println("File Upload is failed");
-//										}
-//									} else {
-//										System.out.println("Find Patient is passed");
-//									}
+									if (patientDetailsPage.getPatientIdValue()
+											.equals(Utils.appProperties.getProperty("patient.id"))) {
+										System.out.println("Find Patient is passed");
+										patientDetailsPage.clickStartVisit();
+										patientDetailsPage.clickStartVisitConfirm();
+										patientDetailsPage.clickAttachments();
+										String filePath = "C:\\Users\\RAJU CHELLE\\Desktop\\UploadFile.pdf";
+										patientDetailsPage.uploadFile(filePath, "File1");
+										if (patientDetailsPage.verifyUploadedFile()) {
+											System.out.println("File Upload is passed");
+											homePage.clickHomeButton();
+											findPatientRecordPage.setPatientIdInPatientSearchFiled(
+													Utils.appProperties.getProperty("patient.id"));
+											findPatientRecordPage.openPatientRecord("Identifier");
+											patientDetailsPage.clickDeletePatient();
+											patientDetailsPage.setDeleteReason("Other");
+											patientDetailsPage.clickDeleteConfirm();
+											findPatientRecordPage.setPatientIdInPatientSearchFiled(
+													Utils.appProperties.getProperty("patient.id"));
+											if (findPatientRecordPage.verifyDeletePatient()) {
+												System.out.println("Delete ptient is passed");
+											} else {
+												System.out.println("Delete ptient is failed");
+											}
+										} else {
+											System.out.println("File Upload is failed");
+										}
+									} else {
+										System.out.println("Find Patient is passed");
+									}
 								} else {
 									System.out.println("Find Patient Record result is incorrect");
 								}
