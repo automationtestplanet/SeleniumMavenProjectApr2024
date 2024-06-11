@@ -10,16 +10,16 @@
 	  </groups>-->
     <classes>
       <class name="org.openmrs.demo.OpenMrsTestNgTestCases"/>
-     <methods>
+    <!-- <methods>
 		  <include name="registerPatientTest" />
 		  <include name="findPatientTest" />	
 		  <include name="activeVisitsAndAddAttachementsTest" />	
 		  <include name="deletePatientTest" />		  
 	  </methods>
-	  
-	  <!--<methods>
-		  <exclude name="activeVistsAndAddAttachments" />
-	  </methods>-->
+	  -->
+	  <methods>
+		  <include name="registerPatientTestData" />
+	  </methods>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->

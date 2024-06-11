@@ -1,5 +1,7 @@
 package org.openmrs.demo;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.Assertions;
@@ -21,9 +23,10 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
 
-public class OpenMrsTestNgBaseTest {
+public class OpenMrsDataDrivenBaseTest {
 
 	WebDriver driver;
 	Commons commons;
@@ -86,5 +89,12 @@ public class OpenMrsTestNgBaseTest {
 
 	@AfterSuite()
 	public void afterSuite() {
+	}
+		
+	@DataProvider(name = "RegisterPatientData")
+	public Iterator<String[]> registerPatientData() {
+		List<String[]> testData = Utils.readDataFromExcel(
+				System.getProperty("user.dir") + Utils.appProperties.getProperty("test.data.file.path"), "RegisterPatientDetails");		
+		return testData.iterator();
 	}
 }

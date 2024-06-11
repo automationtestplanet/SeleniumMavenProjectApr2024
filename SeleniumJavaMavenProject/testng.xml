@@ -17,9 +17,11 @@
 		  <include name="deletePatient" />		  
 	  </methods>-->
 	  
-	  <!--<methods>
-		  <exclude name="activeVistsAndAddAttachments" />
-	  </methods>-->
+	  <methods>
+		 <include name="testDataProvider1" />
+		  <!--<include name="testDataProvider2" />-->
+		 <!-- <include name="testDataProvider3" />-->
+	  </methods>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->

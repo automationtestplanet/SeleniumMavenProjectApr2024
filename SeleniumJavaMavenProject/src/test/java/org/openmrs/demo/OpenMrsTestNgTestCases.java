@@ -79,5 +79,4 @@ public class OpenMrsTestNgTestCases extends OpenMrsTestNgBaseTest{
 		Assert.assertTrue(findPatientRecordPage.verifyDeletePatient());
 		System.out.println("Delete ptient is passed");
 	}
-
 }
