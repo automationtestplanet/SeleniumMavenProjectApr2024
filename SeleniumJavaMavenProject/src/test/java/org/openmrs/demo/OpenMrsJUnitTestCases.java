@@ -128,6 +128,7 @@ class OpenMrsJUnitTestCases extends JUnitTestSuit{
 
 	@AfterEach
 	public void tearDown() throws Exception {
+		Thread.sleep(5000);
 		homePage.clickLogoutButton();
 		Thread.sleep(10000);
 		Assertions.assertEquals(true, commons.verifyPage("Login"));

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite parallel="false" name="Suite">
+  <test name="Test">
+	  <parameter name="UserName" value="Admin" />
+	  <parameter name="Password" value="Admin123" />
+	  <groups>
+		  <run>
+			  <include name="RegressionTest" />
+		  </run>
+	  </groups>
+    <classes>
+      <class name="org.openmrs.demo.TestNGTests"/>
+     <!-- <methods>
+		  <include name="registerPatient" />
+		  <include name="findPatient" />	
+		  <include name="activeVistsAndAddAttachments" />	
+		  <include name="deletePatient" />		  
+	  </methods>-->
+	  
+	  <!--<methods>
+		  <exclude name="activeVistsAndAddAttachments" />
+	  </methods>-->
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->

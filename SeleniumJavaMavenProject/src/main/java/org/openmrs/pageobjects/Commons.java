@@ -17,6 +17,8 @@ public class Commons extends BasePage {
 		super(driver);
 	}
 
+	public static String screenshotPath;
+	
 	public void navigateToApplication(String url) {
 		driver.get(url);
 	}
@@ -58,7 +60,7 @@ public class Commons extends BasePage {
 			File sreenshot = ts.getScreenshotAs(OutputType.FILE);
 			String screenshotName = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss").format(new Date()).replaceAll("[^0-9]",
 					"") + ".jpg";
-			String screenshotPath = System.getProperty("user.dir") + "//src/main//resources//screenshots//"
+			screenshotPath = System.getProperty("user.dir") + "//src/main//resources//screenshots//"
 					+ screenshotName;
 			File destiationLoc = new File(screenshotPath);
 
