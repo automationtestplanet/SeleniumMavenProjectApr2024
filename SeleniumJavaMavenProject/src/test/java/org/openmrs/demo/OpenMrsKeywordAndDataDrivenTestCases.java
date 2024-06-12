@@ -1,33 +1,35 @@
 package org.openmrs.demo;
 
+import java.util.Map;
+
 import org.openmrs.pageobjects.Utils;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
 
-public class OpenMrsTestNgTestCases extends OpenMrsTestNgBaseTest{
-	
-	@Test(groups = {"SmokeTest","RegressionTest"})
-	public void registerPatientTest() {
+public class OpenMrsKeywordAndDataDrivenTestCases extends OpenMrsKeywordAndDataDrivenBaseTest {
+
+	@Test(dataProvider = "TestDataProvider")
+	public void registerPatientTest(Map<String,String> testData) {
 		homePage.selectModule("Register a patient");
 		Assert.assertTrue(commons.verifyModulePage("Register a patient"));
 		System.out.println("Registraion Page is present");
-		registrationPage.enterFullName("K, Ram, Babu");
+		registrationPage.enterFullName(testData.get("Name"));
 		registrationPage.clickNextButton();
-		registrationPage.selectGender("Male");
+		registrationPage.selectGender(testData.get("Gender"));
 		registrationPage.clickNextButton();
-		registrationPage.enterDateOfBirth("01, January, 1990");
+		registrationPage.enterDateOfBirth(testData.get("DateOfBirth"));
 		registrationPage.clickNextButton();
-		registrationPage.enterAddress("Flat No:101, Ameerpet,Hyderabad,Telangana,India,500038");
+		registrationPage.enterAddress(testData.get("Address"));
 		registrationPage.clickNextButton();
-		registrationPage.setPhoneNumber("9876543210");
+		registrationPage.setPhoneNumber(testData.get("PhoneNumber"));
 		registrationPage.clickNextButton();
 		registrationPage.clickNextButton();
 		commons.captureScreenshot();
 		Reporter.log("<img src=\""+commons.screenshotPath+"\" />");		
-		Assert.assertTrue(registrationPage.verifyRegisterDetials("K, Ram, Babu", "Male", "01, January, 1990"));
+		Assert.assertTrue(registrationPage.verifyRegisterDetials(testData.get("Name"), testData.get("Gender"), testData.get("DateOfBirth")));
 		registrationPage.clickConfrim();
-		Assert.assertTrue(patientDetailsPage.verifyPatientName("K, Ram, Babu"));
+		Assert.assertTrue(patientDetailsPage.verifyPatientName(testData.get("Name")));
 		commons.captureScreenshot();
 		Reporter.log("<img src=\""+commons.screenshotPath+"\" />");
 		String patientId = patientDetailsPage.getPatientIdValue();
@@ -35,48 +37,53 @@ public class OpenMrsTestNgTestCases extends OpenMrsTestNgBaseTest{
 		Utils.setProperty("patient.id", patientId);
 	}
 
-	@Test(groups = {"SanityTest","RegressionTest"})
-	public void findPatientTest() {
+	@Test(dataProvider = "TestDataProvider")
+	public void findPatientTest(Map<String,String> testData) {
 		homePage.selectModule("Find Patient Record");
 		Assert.assertTrue(commons.verifyModulePage("Find Patient Record"));
-		findPatientRecordPage.setPatientIdInPatientSearchFiled(Utils.appProperties.getProperty("patient.id"));
+		findPatientRecordPage.setPatientIdInPatientSearchFiled(testData.get("Name"));
 		commons.captureScreenshot();
 		Reporter.log("<img src=\""+commons.screenshotPath+"\" />");
-		Assert.assertTrue(findPatientRecordPage.verifyPatientSearchResult("Identifier",
-				Utils.appProperties.getProperty("patient.id")));
-		findPatientRecordPage.openPatientRecord("Identifier");
+		Assert.assertTrue(findPatientRecordPage.verifyPatientSearchResult("Name",
+				testData.get("Name")));
+		findPatientRecordPage.openPatientRecord("Name");
 		Assert.assertTrue(
-				patientDetailsPage.getPatientIdValue().equals(Utils.appProperties.getProperty("patient.id")));
+				patientDetailsPage.getPatientIdValue().length() > 0);
 		commons.captureScreenshot();
 		Reporter.log("<img src=\""+commons.screenshotPath+"\" />");
 		System.out.println("Find Patient is passed");
 
 	}
 
-	@Test(groups = {"Sanity","RegressionTest"})
-	public void activeVisitsAndAddAttachementsTest() {
-		findPatientTest();
+	@Test(dataProvider = "TestDataProvider")
+	public void activeVisitsAndAddAttachementsTest(Map<String,String> testData) {
+		findPatientTest(testData);
 		patientDetailsPage.clickStartVisit();
 		patientDetailsPage.clickStartVisitConfirm();
 		patientDetailsPage.clickAttachments();
-		String filePath = System.getProperty("user.dir") + Utils.appProperties.getProperty("file.path")+"UploadFile.pdf";
-		patientDetailsPage.uploadFile(filePath, "File1");
+		String filePath = System.getProperty("user.dir") + Utils.appProperties.getProperty("file.path")+testData.get("FileName");
+		patientDetailsPage.uploadFile(filePath, testData.get("Caption"));
 		commons.captureScreenshot();
 		Reporter.log("<img src=\""+commons.screenshotPath+"\" />");
 		Assert.assertTrue(patientDetailsPage.verifyUploadedFile());
 		System.out.println("File Upload is passed");		
 	}
 
-	@Test(groups = "RegressionTest")
-	public void deletePatientTest() {
-		findPatientTest();
+	@Test(dataProvider = "TestDataProvider")
+	public void deletePatientTest(Map<String,String> testData) {
+		findPatientTest(testData);
 		patientDetailsPage.clickDeletePatient();
-		patientDetailsPage.setDeleteReason("Other");
+		patientDetailsPage.setDeleteReason(testData.get("Reason"));
 		patientDetailsPage.clickDeleteConfirm();
-		findPatientRecordPage.setPatientIdInPatientSearchFiled(Utils.appProperties.getProperty("patient.id"));
+		findPatientRecordPage.setPatientIdInPatientSearchFiled(testData.get("Name"));
 		commons.captureScreenshot();
 		Reporter.log("<img src=\""+commons.screenshotPath+"\" />");
 		Assert.assertTrue(findPatientRecordPage.verifyDeletePatient());
 		System.out.println("Delete ptient is passed");
+	}
+	
+	@Test(dataProvider = "TestDataProvider")
+	public void getTestData(Map<String,String> testData) {
+		System.out.println(testData);
 	}
 }

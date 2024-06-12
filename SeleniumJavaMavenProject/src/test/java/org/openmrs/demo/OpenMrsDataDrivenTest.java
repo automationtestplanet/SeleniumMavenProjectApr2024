@@ -5,7 +5,7 @@ import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.Test;
 
-public class OpenMRSDataDrivenTest extends OpenMrsDataDrivenBaseTest{
+public class OpenMrsDataDrivenTest extends OpenMrsDataDrivenBaseTest{
 
 	@Test(dataProvider = "RegisterPatientData")
 	public void registerPatientTest(String name, String gender, String dateOfBirth, String address, String phneNumber) {

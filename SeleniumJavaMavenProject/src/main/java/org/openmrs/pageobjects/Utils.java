@@ -4,11 +4,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Row.MissingCellPolicy;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -87,5 +92,121 @@ public class Utils {
 		}
 
 		return testDataList;
+	}
+	
+	public static Iterator<Object[]> readKeywordDrivenTestDataFromExcel(String filePath, String sheetname,
+			String methodName) {
+		List<Map<String, String>> testData = null;
+		try {
+			FileInputStream file = new FileInputStream(new File(filePath));
+			XSSFWorkbook workbook = new XSSFWorkbook(file);
+			XSSFSheet sheet = workbook.getSheet(sheetname);
+
+			testData = getTestDataBySheet(sheet, methodName);
+
+		} catch (Exception e) {
+			System.out.println("Exception Occured while read the data from excel: " + e.getClass());
+		}
+
+		return getTestDataIterator(testData);
+	}
+	
+	public static Iterator<Object[]> getTestDataIterator(List<Map<String, String>> testData) {
+
+		List<Object[]> iteratorList = new ArrayList<>();
+
+		for (Map<String, String> eachMap : testData)
+			iteratorList.add(new Object[] { eachMap });
+		return iteratorList.iterator();
+	}
+	
+	public static List<Map<String, String>> getTestDataBySheet(XSSFSheet testDataSheet, String testMethodName) {
+
+		List<Map<String, String>> testData = new ArrayList<>();
+
+		int startRow = getStartRow(testDataSheet, testMethodName);
+		List<String> testDataHeaders = getTestDataHeaders(startRow + 1, testDataSheet);
+		int endRow = getEndRow(startRow, testDataSheet, testMethodName);
+
+		for (int i = startRow + 2; i < endRow; i++) {
+			Map<String, String> testDataMap = new Hashtable<>();
+			Row testDataRow = testDataSheet.getRow(i);
+
+			Cell cellData;
+
+			for (int j = 0; j < testDataHeaders.size(); j++) {
+				if (!testDataHeaders.get(j).equals("CELL NOT FOUND")
+						&& !testDataHeaders.get(j).equals("NO DATA FOUND IN THE CELL")) {
+					cellData = testDataRow.getCell(j, MissingCellPolicy.RETURN_NULL_AND_BLANK);
+					if (cellData != null) {
+						cellData.setCellType(CellType.STRING);
+					}
+
+					if (cellData != null && !(cellData.getStringCellValue().toString().trim().equals(""))) {
+						testDataMap.put(testDataHeaders.get(j), cellData.getStringCellValue());
+					}
+				}
+			}
+			testData.add(testDataMap);
+		}
+
+		return testData;
+
+	}
+	
+	public static int getStartRow(XSSFSheet testDataSheet, String testMethodName) {
+		try {
+			for (int i = 1; i < testDataSheet.getLastRowNum(); i++) {
+				Cell cellData = testDataSheet.getRow(i).getCell(0);
+				if (testDataSheet.getRow(i).getCell(0) != null) {
+					if( !(cellData.getStringCellValue().toString().trim().equals(""))) {
+						if (testDataSheet.getRow(i).getCell(0).getStringCellValue().toString().trim()
+								.equalsIgnoreCase(testMethodName))
+							return i;
+					}
+				}
+			}
+
+		} catch (Exception e) {
+			System.out.println("Exception Occured while getting Start Row Val: " + e.getClass());
+		}
+		return 0;
+	}
+	
+	public static int getEndRow(int startRow, XSSFSheet testDataSheet, String testMethodName) {
+		try {
+			for (int i = startRow + 1; i < testDataSheet.getLastRowNum(); i++) {
+				if (testDataSheet.getRow(i).getCell(0) != null) {
+					if(!(testDataSheet.getRow(i).getCell(0).getStringCellValue().toString().trim().equals(""))) {
+						if (testDataSheet.getRow(i).getCell(0).getStringCellValue().toString().trim()
+								.equalsIgnoreCase(testMethodName))
+							return i;
+					}
+					
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("Exception Occured while getting End Row Val: " + e.getClass());
+		}
+		return startRow;
+	}
+	
+	public static List<String> getTestDataHeaders(int startRow, XSSFSheet testDataSheet) {
+		List<String> columnHeadersNamesList = new ArrayList<>();
+		Row columnsHeadersRow = testDataSheet.getRow(startRow);
+
+		for (int i = 0; i < columnsHeadersRow.getLastCellNum(); i++) {
+			Cell dataCell = columnsHeadersRow.getCell(i, MissingCellPolicy.RETURN_NULL_AND_BLANK);
+			if (dataCell == null)
+				columnHeadersNamesList.add("CELL NOT FOUND");
+			else if (dataCell.getStringCellValue().toString().equals(""))
+				columnHeadersNamesList.add("NO DATA FOUND IN THE CELL");
+			else {
+				dataCell.setCellType(CellType.STRING);
+				columnHeadersNamesList.add(dataCell.getStringCellValue());
+			}
+		}
+
+		return columnHeadersNamesList;
 	}
 }

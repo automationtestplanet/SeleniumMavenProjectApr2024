@@ -5,19 +5,19 @@
     <parameter name="UserName" value="Admin"/>
     <parameter name="Password" value="Admin123"/>
     <classes>
-      <class name="org.openmrs.demo.OpenMRSDataDrivenTest">
+      <class name="org.openmrs.demo.OpenMrsKeywordAndDataDrivenTestCases">
         <methods>
-          <include name="afterClass"/>
-          <include name="beforeSuite"/>
-          <include name="afterSuite"/>
           <include name="beforeTest"/>
           <include name="afterMethod"/>
-          <include name="beforeClass"/>
-          <include name="registerPatientTest" invocation-numbers="0 1 2"/>
-          <include name="beforeMethod"/>
+          <include name="getTestData"/>
+          <include name="beforeSuite"/>
           <include name="afterTest"/>
+          <include name="afterClass"/>
+          <include name="afterSuite"/>
+          <include name="beforeMethod"/>
+          <include name="beforeClass"/>
         </methods>
-      </class> <!-- org.openmrs.demo.OpenMRSDataDrivenTest -->
+      </class> <!-- org.openmrs.demo.OpenMrsKeywordAndDataDrivenTestCases -->
     </classes>
   </test> <!-- Test(failed) -->
 </suite> <!-- Failed suite [Suite] -->

@@ -4,7 +4,7 @@
 	  <parameter name="UserName" value="Admin" />
 	  <parameter name="Password" value="Admin123" />
     <classes>
-      <class name="org.openmrs.demo.OpenMrsDataDrivenTest"/>
+      <class name="org.openmrs.demo.OpenMrsKeywordAndDataDrivenTestCases"/>
 	  <methods>
 		  <include name="registerPatientTest" />
 	  </methods>
