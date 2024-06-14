@@ -13,7 +13,6 @@ public class OpenMrsKeywordAndDataDrivenTestCases extends OpenMrsKeywordAndDataD
 	public void registerPatientTest(Map<String,String> testData) {
 		homePage.selectModule("Register a patient");
 		Assert.assertTrue(commons.verifyModulePage("Register a patient"));
-		System.out.println("Registraion Page is present");
 		registrationPage.enterFullName(testData.get("Name"));
 		registrationPage.clickNextButton();
 		registrationPage.selectGender(testData.get("Gender"));
@@ -33,7 +32,6 @@ public class OpenMrsKeywordAndDataDrivenTestCases extends OpenMrsKeywordAndDataD
 		commons.captureScreenshot();
 		Reporter.log("<img src=\""+commons.screenshotPath+"\" />");
 		String patientId = patientDetailsPage.getPatientIdValue();
-		System.out.println("Patient Id: " + patientId);
 		Utils.setProperty("patient.id", patientId);
 	}
 
